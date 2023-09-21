@@ -206,6 +206,7 @@ screen = pygame.display.set_mode((cell_number * cell_size,cell_number * cell_siz
 clock = pygame.time.Clock()
 bg = pygame.image.load('Graphics/snake_background.jpeg')
 bg = pygame.transform.scale(bg, (cell_number * cell_size,cell_number * cell_size))
+
 LEGO1 = pygame.image.load('Graphics/LEGO_1.png')
 LEGO1 = pygame.transform.scale(LEGO1, (50, 50))
 LEGO2 = pygame.image.load('Graphics/LEGO_2.png').convert_alpha()
