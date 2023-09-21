@@ -31,13 +31,13 @@ class SNAKE:
 		self.body_horizontal = pygame.image.load('Graphics/train_horizontal.png').convert_alpha()
 		self.body_horizontal = pygame.transform.scale(self.body_horizontal, (50, 50))
 
-		self.body_tr = pygame.image.load('Graphics/train_tr.png').convert_alpha()
+		self.body_tr = pygame.image.load('Graphics/train_vertical.png').convert_alpha()
 		self.body_tr = pygame.transform.scale(self.body_tr, (50, 50))
-		self.body_tl = pygame.image.load('Graphics/train_tl.png').convert_alpha()
+		self.body_tl = pygame.image.load('Graphics/train_vertical.png').convert_alpha()
 		self.body_tl = pygame.transform.scale(self.body_tl, (50, 50))
-		self.body_br = pygame.image.load('Graphics/train_br.png').convert_alpha()
+		self.body_br = pygame.image.load('Graphics/train_horizontal.png').convert_alpha()
 		self.body_br = pygame.transform.scale(self.body_br, (50, 50))
-		self.body_bl = pygame.image.load('Graphics/train_bl.png').convert_alpha()
+		self.body_bl = pygame.image.load('Graphics/train_horizontal.png').convert_alpha()
 		self.body_bl = pygame.transform.scale(self.body_bl, (50, 50))
 
 		self.crunch_sound = pygame.mixer.Sound('Sound/crunch.wav')
