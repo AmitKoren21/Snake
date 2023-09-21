@@ -3,27 +3,42 @@ from pygame.math import Vector2
 
 class SNAKE:
 	def __init__(self):
-		self.body = [Vector2(5,10),Vector2(4,10),Vector2(3,10)]
-		self.direction = Vector2(0,0)
+		self.body = [Vector2(5, 10), Vector2(4, 10), Vector2(3, 10)]
+		self.direction = Vector2(0, 0)
 		self.new_block = False
 
-		self.head_up = pygame.image.load('Graphics/head_up.png').convert_alpha()
-		self.head_down = pygame.image.load('Graphics/head_down.png').convert_alpha()
-		self.head_right = pygame.image.load('Graphics/head_right.png').convert_alpha()
-		self.head_left = pygame.image.load('Graphics/head_left.png').convert_alpha()
+		self.head_up = pygame.image.load('Graphics/train_up.png').convert_alpha()
+		self.head_up = pygame.transform.scale(self.head_up, (50, 50))
+		self.head_down = pygame.image.load('Graphics/train_down.png').convert_alpha()
+		self.head_down = pygame.transform.scale(self.head_down, (50, 50))
+		self.head_right = pygame.image.load('Graphics/train_right.png').convert_alpha()
+		self.head_right = pygame.transform.scale(self.head_right, (50, 50))
+		self.head_left = pygame.image.load('Graphics/train_left.png').convert_alpha()
+		self.head_left = pygame.transform.scale(self.head_left, (50, 50))
 		
-		self.tail_up = pygame.image.load('Graphics/tail_up.png').convert_alpha()
-		self.tail_down = pygame.image.load('Graphics/tail_down.png').convert_alpha()
-		self.tail_right = pygame.image.load('Graphics/tail_right.png').convert_alpha()
-		self.tail_left = pygame.image.load('Graphics/tail_left.png').convert_alpha()
+		self.tail_up = pygame.image.load('Graphics/train_up.png').convert_alpha()
+		self.tail_up = pygame.transform.scale(self.tail_up, (50, 50))
+		self.tail_down = pygame.image.load('Graphics/train_down.png').convert_alpha()
+		self.tail_down = pygame.transform.scale(self.tail_down, (50, 50))
+		self.tail_right = pygame.image.load('Graphics/train_right.png').convert_alpha()
+		self.tail_right = pygame.transform.scale(self.tail_right, (50, 50))
+		self.tail_left = pygame.image.load('Graphics/train_left.png').convert_alpha()
+		self.tail_left = pygame.transform.scale(self.tail_left, (50, 50))
 
-		self.body_vertical = pygame.image.load('Graphics/body_vertical.png').convert_alpha()
-		self.body_horizontal = pygame.image.load('Graphics/body_horizontal.png').convert_alpha()
+		self.body_vertical = pygame.image.load('Graphics/train_vertical.png').convert_alpha()
+		self.body_vertical = pygame.transform.scale(self.body_vertical, (50, 50))
+		self.body_horizontal = pygame.image.load('Graphics/train_horizontal.png').convert_alpha()
+		self.body_horizontal = pygame.transform.scale(self.body_horizontal, (50, 50))
 
-		self.body_tr = pygame.image.load('Graphics/body_tr.png').convert_alpha()
-		self.body_tl = pygame.image.load('Graphics/body_tl.png').convert_alpha()
-		self.body_br = pygame.image.load('Graphics/body_br.png').convert_alpha()
-		self.body_bl = pygame.image.load('Graphics/body_bl.png').convert_alpha()
+		self.body_tr = pygame.image.load('Graphics/train_tr.png').convert_alpha()
+		self.body_tr = pygame.transform.scale(self.body_tr, (50, 50))
+		self.body_tl = pygame.image.load('Graphics/train_tl.png').convert_alpha()
+		self.body_tl = pygame.transform.scale(self.body_tl, (50, 50))
+		self.body_br = pygame.image.load('Graphics/train_br.png').convert_alpha()
+		self.body_br = pygame.transform.scale(self.body_br, (50, 50))
+		self.body_bl = pygame.image.load('Graphics/train_bl.png').convert_alpha()
+		self.body_bl = pygame.transform.scale(self.body_bl, (50, 50))
+
 		self.crunch_sound = pygame.mixer.Sound('Sound/crunch.wav')
 
 	def draw_snake(self):
@@ -95,10 +110,17 @@ class SNAKE:
 class FRUIT:
 	def __init__(self):
 		self.randomize()
+		self.npc = self.choose_random_npc()
+
+	def choose_random_npc(self):
+		npc_list = [LEGO1, LEGO2, LEGO3, LEGO4, LEGO5, LEGO6, LEGO7, LEGO8, LEGO9, LEGO11, LEGO12, LEGO13]
+		random_npc = random.choice(npc_list)
+		return random_npc
 
 	def draw_fruit(self):
+		self.choose_random_npc()
 		fruit_rect = pygame.Rect(int(self.pos.x * cell_size),int(self.pos.y * cell_size),cell_size,cell_size)
-		screen.blit(apple,fruit_rect)
+		screen.blit(self.npc, fruit_rect)
 		#pygame.draw.rect(screen,(126,166,114),fruit_rect)
 
 	def randomize(self):
@@ -106,10 +128,12 @@ class FRUIT:
 		self.y = random.randint(0,cell_number - 1)
 		self.pos = Vector2(self.x,self.y)
 
+
 class MAIN:
 	def __init__(self):
 		self.snake = SNAKE()
 		self.fruit = FRUIT()
+		self.npc = FRUIT.choose_random_npc(self.fruit)
 
 	def update(self):
 		self.snake.move_snake()
@@ -124,6 +148,7 @@ class MAIN:
 
 	def check_collision(self):
 		if self.fruit.pos == self.snake.body[0]:
+			self.fruit.draw_fruit()
 			self.fruit.randomize()
 			self.snake.add_block()
 			self.snake.play_crunch_sound()
@@ -139,7 +164,7 @@ class MAIN:
 		for block in self.snake.body[1:]:
 			if block == self.snake.body[0]:
 				self.game_over()
-		
+
 	def game_over(self):
 		self.snake.reset()
 
@@ -163,21 +188,49 @@ class MAIN:
 		score_x = int(cell_size * cell_number - 60)
 		score_y = int(cell_size * cell_number - 40)
 		score_rect = score_surface.get_rect(center = (score_x,score_y))
-		apple_rect = apple.get_rect(midright = (score_rect.left,score_rect.centery))
+		apple_rect = self.npc.get_rect(midright = (score_rect.left,score_rect.centery))
 		bg_rect = pygame.Rect(apple_rect.left,apple_rect.top,apple_rect.width + score_rect.width + 6,apple_rect.height)
 
 		pygame.draw.rect(screen,(167,209,61),bg_rect)
 		screen.blit(score_surface,score_rect)
-		screen.blit(apple,apple_rect)
+		screen.blit(LEGO1, apple_rect)
 		pygame.draw.rect(screen,(56,74,12),bg_rect,2)
 
-pygame.mixer.pre_init(44100,-16,2,512)
+
+pygame.mixer.pre_init(44100, -16, 2, 512)
 pygame.init()
 cell_size = 40
 cell_number = 20
 screen = pygame.display.set_mode((cell_number * cell_size,cell_number * cell_size))
 clock = pygame.time.Clock()
-apple = pygame.image.load('Graphics/apple.png').convert_alpha()
+LEGO1 = pygame.image.load('Graphics/LEGO_1.png')
+LEGO1 = pygame.transform.scale(LEGO1, (50, 50))
+LEGO2 = pygame.image.load('Graphics/LEGO_2.png').convert_alpha()
+LEGO2 = pygame.transform.scale(LEGO2, (50, 50))
+LEGO3 = pygame.image.load('Graphics/LEGO_3.png').convert_alpha()
+LEGO3 = pygame.transform.scale(LEGO3, (50, 50))
+LEGO4 = pygame.image.load('Graphics/LEGO_4.png').convert_alpha()
+LEGO4 = pygame.transform.scale(LEGO4, (50, 50))
+LEGO5 = pygame.image.load('Graphics/LEGO_5.png').convert_alpha()
+LEGO5 = pygame.transform.scale(LEGO5, (50, 50))
+LEGO6 = pygame.image.load('Graphics/LEGO_6.png').convert_alpha()
+LEGO6 = pygame.transform.scale(LEGO6, (50, 50))
+LEGO7 = pygame.image.load('Graphics/LEGO_7.png').convert_alpha()
+LEGO7 = pygame.transform.scale(LEGO7, (50, 50))
+LEGO8 = pygame.image.load('Graphics/LEGO_8.png').convert_alpha()
+LEGO8 = pygame.transform.scale(LEGO8, (50, 50))
+LEGO9 = pygame.image.load('Graphics/LEGO_9.png').convert_alpha()
+LEGO9 = pygame.transform.scale(LEGO9, (50, 50))
+LEGO10 = pygame.image.load('Graphics/LEGO_10.png').convert_alpha()
+LEGO10 = pygame.transform.scale(LEGO10, (50, 50))
+LEGO11 = pygame.image.load('Graphics/LEGO_11.png').convert_alpha()
+LEGO11 = pygame.transform.scale(LEGO11, (50, 50))
+LEGO12 = pygame.image.load('Graphics/LEGO_13.png').convert_alpha()
+LEGO12 = pygame.transform.scale(LEGO12, (50, 50))
+LEGO13 = pygame.image.load('Graphics/LEGO_14.png').convert_alpha()
+LEGO13 = pygame.transform.scale(LEGO13, (50, 50))
+
+npc_list = [LEGO1, LEGO2, LEGO3, LEGO4, LEGO5, LEGO6, LEGO7, LEGO8, LEGO9, LEGO11, LEGO12, LEGO13]
 game_font = pygame.font.Font('Font/PoetsenOne-Regular.ttf', 25)
 
 SCREEN_UPDATE = pygame.USEREVENT
