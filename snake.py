@@ -40,7 +40,7 @@ class SNAKE:
 		self.body_bl = pygame.image.load('Graphics/train_horizontal.png').convert_alpha()
 		self.body_bl = pygame.transform.scale(self.body_bl, (50, 50))
 
-		self.crunch_sound = pygame.mixer.Sound('Sound/crunch.wav')
+		self.yay_sound = pygame.mixer.Sound('Sound/yay-6120.mp3')
 
 	def draw_snake(self):
 		self.update_head_graphics()
@@ -100,8 +100,8 @@ class SNAKE:
 	def add_block(self):
 		self.new_block = True
 
-	def play_crunch_sound(self):
-		self.crunch_sound.play()
+	def play_yay_sound(self):
+		self.yay_sound.play()
 
 	def reset(self):
 		self.body = [Vector2(5,10),Vector2(4,10),Vector2(3,10)]
@@ -152,7 +152,7 @@ class MAIN:
 			self.fruit.draw_fruit()
 			self.fruit.randomize()
 			self.snake.add_block()
-			self.snake.play_crunch_sound()
+			self.snake.play_yay_sound()
 
 		for block in self.snake.body[1:]:
 			if block == self.fruit.pos:
