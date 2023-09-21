@@ -142,7 +142,7 @@ class MAIN:
 		self.check_fail()
 
 	def draw_elements(self):
-		self.draw_grass()
+		# self.draw_grass()
 		self.fruit.draw_fruit()
 		self.snake.draw_snake()
 		self.draw_score()
@@ -169,19 +169,19 @@ class MAIN:
 	def game_over(self):
 		self.snake.reset()
 
-	def draw_grass(self):
-		grass_color = (167,209,61)
-		for row in range(cell_number):
-			if row % 2 == 0: 
-				for col in range(cell_number):
-					if col % 2 == 0:
-						grass_rect = pygame.Rect(col * cell_size,row * cell_size,cell_size,cell_size)
-						pygame.draw.rect(screen,grass_color,grass_rect)
-			else:
-				for col in range(cell_number):
-					if col % 2 != 0:
-						grass_rect = pygame.Rect(col * cell_size,row * cell_size,cell_size,cell_size)
-						pygame.draw.rect(screen,grass_color,grass_rect)			
+	# def draw_grass(self):
+	# 	grass_color = (167,209,61)
+	# 	for row in range(cell_number):
+	# 		if row % 2 == 0:
+	# 			for col in range(cell_number):
+	# 				if col % 2 == 0:
+	# 					grass_rect = pygame.Rect(col * cell_size,row * cell_size,cell_size,cell_size)
+	# 					pygame.draw.rect(screen,grass_color,grass_rect)
+	# 		else:
+	# 			for col in range(cell_number):
+	# 				if col % 2 != 0:
+	# 					grass_rect = pygame.Rect(col * cell_size,row * cell_size,cell_size,cell_size)
+	# 					pygame.draw.rect(screen,grass_color,grass_rect)
 
 	def draw_score(self):
 		score_text = str(len(self.snake.body) - 3)
@@ -204,6 +204,8 @@ cell_size = 40
 cell_number = 20
 screen = pygame.display.set_mode((cell_number * cell_size,cell_number * cell_size))
 clock = pygame.time.Clock()
+bg = pygame.image.load('Graphics/snake_background.jpeg')
+bg = pygame.transform.scale(bg, (cell_number * cell_size,cell_number * cell_size))
 LEGO1 = pygame.image.load('Graphics/LEGO_1.png')
 LEGO1 = pygame.transform.scale(LEGO1, (50, 50))
 LEGO2 = pygame.image.load('Graphics/LEGO_2.png').convert_alpha()
@@ -260,7 +262,8 @@ while True:
 				if main_game.snake.direction.x != 1:
 					main_game.snake.direction = Vector2(-1,0)
 
-	screen.fill((175,215,70))
+	# screen.fill((175,215,70))
+	screen.blit(bg, (0, 0))
 	main_game.draw_elements()
 	pygame.display.update()
 	clock.tick(60)
